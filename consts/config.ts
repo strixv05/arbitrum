@@ -26,21 +26,21 @@ export const wallets = [
     image: "/Metamask.png",
     url: "https://metamask.io/download/",
   },
-  {
-    name: "Trust Wallet",
-    image: "/Trustwallet.png",
-    url: "https://trustwallet.com/browser-extension",
-  },
-  {
-    name: "Wallet Connect",
-    image: "/Walletconnect.png",
-    url: "https://walletconnect.com/",
-  },
-  {
-    name: "Coinbase Wallet",
-    image: "/Coinbase.png",
-    url: "https://www.coinbase.com/en-gb/wallet/downloads",
-  },
+  // {
+  //   name: "Trust Wallet",
+  //   image: "/Trustwallet.png",
+  //   url: "https://trustwallet.com/browser-extension",
+  // },
+  // {
+  //   name: "Wallet Connect",
+  //   image: "/Walletconnect.png",
+  //   url: "https://walletconnect.com/",
+  // },
+  // {
+  //   name: "Coinbase Wallet",
+  //   image: "/Coinbase.png",
+  //   url: "https://www.coinbase.com/en-gb/wallet/downloads",
+  // },
 ];
 
 export const transakCoinMapping: { [key: string]: string } = {
