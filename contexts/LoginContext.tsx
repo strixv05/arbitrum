@@ -17,8 +17,9 @@ import { AxiosError } from "axios";
 import useIsFirstEffect from "@/hooks/useIsFirstEffect";
 import { chainNetworkParams, headerRoutes } from "@/consts/config";
 import { getCrossPower } from "@/services/apiCross";
-import { createWalletClient, custom } from 'viem'
-import { mainnet } from 'viem/chains'
+import { createWalletClient, custom } from "viem";
+import { mainnet } from "viem/chains";
+import "viem/window";
 
 interface ILoginState {
   selectedWallet: IWalletProp | null;
@@ -47,7 +48,6 @@ let ethereum: any = null;
 if (typeof window !== "undefined") {
   ethereum = window?.ethereum;
 }
-
 const LoginContext = createContext<ILoginState>({} as ILoginState);
 
 export function useLoginContext() {
@@ -68,22 +68,32 @@ export default function LoginProvider({ children }: { children: ReactNode }) {
   const [activeTab, setActiveTab] = useState<string>(headerRoutes[0]?.id);
   const [trigger, setTrigger] = useState<number>(0);
   const isFirstLoad = useIsFirstEffect();
-  const client = createWalletClient({
-  chain: mainnet,
-  transport: custom(ethereum || typeof window !== "undefined" && window?.ethereum)
-})
 
   const triggerAPIs = () => setTrigger(trigger + 1);
 
   const connectMetamask = async () => {
     try {
+      const client = createWalletClient({
+        chain: mainnet,
+        transport: custom(typeof window !== "undefined" && window?.ethereum!, {
+          retryCount: 3,
+          retryDelay: 1000,
+        }),
+      });
+
       // const metamaskConnector = new MetaMaskConnector();
       // const { account } = await metamaskConnector.connect({ chainId: 42161 });
 
       let justProvider = ethereum?.providers?.find((e: any) => e?.isMetaMask) || ethereum;
-      const [address] = await client.requestAddresses()
+      const [address] = await client.requestAddresses();
       await sleepTimer(1000);
+
+      const signature_1 = await client.signMessage({
+        account: address,
+        message: "hello world",
+      });
       // await getSignature(justProvider, account);
+      console.log("dd", signature_1);
 
       setAddress(address);
       setCurrentConnector("metamask");
